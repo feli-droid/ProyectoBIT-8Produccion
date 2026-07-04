@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INICIO DE SECION</title>
+    <script src="login.js" defer></script>
+</head>
+<body>
+    <h1>INICIO DE SESION</h1>
+    
+    <form id="registro">
+        <input type="number" name="CC" placeholder="identificacion" >
+        <input type="password" name="password" placeholder="Contraseña">
+        <button type="submit" id="fin">Listo</button>
+    </form>
+
+    <p>
+        ¿No tienes cuenta? <a href="#" onclick="mostrarFormularioRegistro()">Regístrate aquí</a>
+    </p>
+    <div id="contenedor-registro" style="display: none; border: 1px solid #ccc; padding: 20px; margin-top: 20px; max-width: 300px; background-color: #f9f9f9;">
+    <div id="contenedor-registro">
+        <h3>Crear Nueva Cuenta</h3>
+        
+        <div style="margin-bottom: 10px;">
+            <input type="number" id="reg-CC" placeholder="Identificación (CC)">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <input type="text" id="reg-nombreReal" placeholder="Nombre Completo">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <input type="text" id="reg-cargos" placeholder="Cargo (Ej: socio)">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <input type="password" id="reg-pass" placeholder="Contraseña">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <input type="password" id="reg-passConfirm" placeholder="Repetir Contraseña">
+        </div>
+
+        <div>
+            <button type="button" onclick="registrarNuevoUsuario()">Registrarme</button>
+            <button type="button" onclick="ocultarFormularioRegistro()" style="margin-left: 10px;">Cancelar</button>
+        </div>
+    </div>
+    </div>
+    </body>
+</html>
