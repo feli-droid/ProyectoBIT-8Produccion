@@ -1,5 +1,6 @@
 const FIREBASE_URL = "https://empresa-bits-8-default-rtdb.firebaseio.com/productos";
 let inventario = {};
+let ingredientesTemporales = []; 
 
 const form = document.getElementById('product-form');
 const codigoInput = document.getElementById('codigo');
@@ -11,32 +12,118 @@ const editIdInput = document.getElementById('edit-id');
 const btnSubmit = document.getElementById('btn-submit');
 const formTitle = document.getElementById('form-title');
 const tableBody = document.getElementById('inventory-table-body');
-const buscarCodigoInput = document.getElementById('buscar-codigo'); // Referencia al buscador
+const buscarCodigoInput = document.getElementById('buscar-codigo');
 
-// Desactivar stock si se selecciona receta y forzar que sea 0
+const seccionIngredientes = document.getElementById('seccion-ingredientes');
+const ingredienteTipo = document.getElementById('ingrediente-tipo');
+const ingredienteSeleccionado = document.getElementById('ingrediente-seleccionado');
+const ingredienteCantidad = document.getElementById('ingrediente-cantidad');
+const listaIngredientesAgregados = document.getElementById('lista-ingredientes-agregados');
+
 function toggleStock() {
     if (tipoSelect.value === 'receta') {
         stockInput.value = 0;
         stockInput.disabled = true;
+        seccionIngredientes.style.display = 'block'; 
+        actualizarDesplegableIngredientes();
     } else {
         stockInput.disabled = false;
+        seccionIngredientes.style.display = 'none'; 
+        ingredientesTemporales = [];
+        actualizarListaVisualIngredientes();
     }
 }
 
-// Obtener datos de Firebase
+function actualizarDesplegableIngredientes() {
+    ingredienteSeleccionado.innerHTML = '';
+    const tipoBuscado = ingredienteTipo.value;
+    const keys = Object.keys(inventario);
+
+    let contador = 0;
+    keys.forEach(id => {
+        const prod = inventario[id];
+        if (id === editIdInput.value) return;
+
+        if (prod.tipo === tipoBuscado) {
+            const option = document.createElement('option');
+            option.value = id; 
+            option.textContent = `[${prod.codigo}] - ${prod.nombre}`;
+            ingredienteSeleccionado.appendChild(option);
+            contador++;
+        }
+    });
+
+    if (contador === 0) {
+        const option = document.createElement('option');
+        option.textContent = "No hay elementos registrados";
+        option.disabled = true;
+        ingredienteSeleccionado.appendChild(option);
+    }
+}
+
+function agregarIngredienteLista() {
+    const idItem = ingredienteSeleccionado.value;
+    const cantidad = parseFloat(ingredienteCantidad.value);
+
+    if (!idItem || isNaN(cantidad) || cantidad <= 0) {
+        alert("Selecciona un ítem y asigna una cantidad válida.");
+        return;
+    }
+
+    const productoOriginal = inventario[idItem];
+    
+    const existe = Array.from(ingredientesTemporales).some(ing => ing.id === idItem);
+    if (existe) {
+        alert("Este ingrediente ya está en la lista.");
+        return;
+    }
+
+    ingredientesTemporales.push({
+        id: idItem,
+        codigo: productoOriginal.codigo,
+        nombre: productoOriginal.nombre,
+        tipo: productoOriginal.tipo,
+        cantidad: cantidad
+    });
+
+    ingredienteCantidad.value = '';
+    actualizarListaVisualIngredientes();
+}
+
+function actualizarListaVisualIngredientes() {
+    listaIngredientesAgregados.innerHTML = '';
+    ingredientesTemporales.forEach((ing, index) => {
+        const li = document.createElement('li');
+        li.textContent = `[${ing.codigo}] ${ing.nombre} - Cant: ${ing.cantidad} `;
+        
+        const btnEliminarIng = document.createElement('button');
+        btnEliminarIng.textContent = "X";
+        btnEliminarIng.type = "button";
+        btnEliminarIng.onclick = () => {
+            ingredientesTemporales.splice(index, 1);
+            actualizarListaVisualIngredientes();
+        };
+        
+        li.appendChild(btnEliminarIng);
+        listaIngredientesAgregados.appendChild(li);
+    });
+}
+
 async function fetchProductos() {
     try {
         const response = await fetch(`${FIREBASE_URL}.json`);
         const data = await response.json();
         inventario = data || {};
         renderTable();
+        if (seccionIngredientes.style.display === 'block') {
+            actualizarDesplegableIngredientes();
+        }
     } catch (error) {
         console.error(error);
         tableBody.innerHTML = `<tr><td colspan="6">Error al conectar con Firebase.</td></tr>`;
     }
 }
 
-// Dibujar las filas de la tabla (Incluye Filtro de Búsqueda)
 function renderTable() {
     tableBody.innerHTML = '';
     const keys = Object.keys(inventario);
@@ -52,23 +139,20 @@ function renderTable() {
     keys.forEach((id) => {
         const producto = inventario[id];
         
-        // Filtro: Si hay algo escrito en el buscador, verifica si el código del producto lo incluye
         if (busqueda && !producto.codigo.toLowerCase().includes(busqueda)) {
-            return; // Salta este producto si no coincide
+            return;
         }
 
         filasInsertadas++;
         const tr = document.createElement('tr');
-        
         const tipoTexto = producto.tipo === 'receta' ? 'Receta' : 'Materia Prima';
-        const stockTexto = producto.stock; 
 
         tr.innerHTML = `
             <td>${producto.codigo}</td>
             <td>${producto.nombre}</td>
             <td>${tipoTexto}</td>
             <td>${producto.proveedor}</td>
-            <td>${stockTexto}</td>
+            <td>${producto.stock}</td>
             <td>
                 <button onclick="editProduct('${id}')">Editar</button>
                 <button onclick="deleteProduct('${id}')">Eliminar</button>
@@ -77,13 +161,11 @@ function renderTable() {
         tableBody.appendChild(tr);
     });
 
-    // Si se buscó algo y no hubo coincidencias
     if (filasInsertadas === 0 && busqueda) {
         tableBody.innerHTML = `<tr><td colspan="6">No se encontró ningún producto con ese código.</td></tr>`;
     }
 }
 
-// Guardar o Actualizar en Firebase
 form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -95,18 +177,21 @@ form.addEventListener('submit', async function(e) {
         proveedor: proveedorInput.value
     };
 
+    // Se guardan en el objeto final que va directo a Firebase
+    if (tipoSelect.value === 'receta') {
+        productoData.ingredientes = ingredientesTemporales;
+    }
+
     const id = editIdInput.value;
 
     try {
         if (id === "") {
-            // Crear nuevo (POST)
             await fetch(`${FIREBASE_URL}.json`, {
                 method: 'POST',
                 body: JSON.stringify(productoData),
                 headers: { 'Content-Type': 'application/json' }
             });
         } else {
-            // Modificar existente (PUT)
             await fetch(`${FIREBASE_URL}/${id}.json`, {
                 method: 'PUT',
                 body: JSON.stringify(productoData),
@@ -119,7 +204,8 @@ form.addEventListener('submit', async function(e) {
         }
 
         form.reset();
-        toggleStock();
+        ingredientesTemporales = [];
+        toggleStock(); // Vuelve a ocultar la sección de ingredientes automáticamente
         await fetchProductos();
         
     } catch (error) {
@@ -128,7 +214,6 @@ form.addEventListener('submit', async function(e) {
     }
 });
 
-// Cargar datos en el formulario para editar
 window.editProduct = function(id) {
     const prod = inventario[id];
     
@@ -137,15 +222,19 @@ window.editProduct = function(id) {
     tipoSelect.value = prod.tipo;
     proveedorInput.value = prod.proveedor;
     
-    toggleStock();
+    toggleStock(); // Muestra u oculta la sección dependiendo del tipo del producto editado
     stockInput.value = prod.stock; 
+
+    if (prod.tipo === 'receta') {
+        ingredientesTemporales = prod.ingredientes ? [...prod.ingredientes] : [];
+        actualizarListaVisualIngredientes();
+    }
 
     editIdInput.value = id;
     btnSubmit.textContent = "Actualizar Producto";
     formTitle.textContent = "Editando Producto: " + prod.nombre;
 };
 
-// Eliminar de Firebase
 window.deleteProduct = async function(id) {
     if(confirm('¿Seguro que deseas eliminar este producto?')) {
         try {
@@ -158,6 +247,7 @@ window.deleteProduct = async function(id) {
                 editIdInput.value = "";
                 btnSubmit.textContent = "Guardar Producto";
                 formTitle.textContent = "Añadir Nuevo Producto";
+                ingredientesTemporales = [];
                 toggleStock();
             }
 
@@ -169,5 +259,4 @@ window.deleteProduct = async function(id) {
     }
 };
 
-// Carga inicial
 fetchProductos();

@@ -1,8 +1,5 @@
 const URL_LOGIN = "https://empresa-bits-8-default-rtdb.firebaseio.com/";
 
-// ==========================================
-// 1. LÓGICA DEL LOGIN (INICIO DE SESIÓN)
-// ==========================================
 const formulario = document.getElementById("registro");
 
 formulario.addEventListener("submit", async (e) => {
@@ -38,13 +35,7 @@ formulario.addEventListener("submit", async (e) => {
     }
 });
 
-
-// ==========================================
-// 2. LÓGICA DEL REGISTRO DE NUEVOS USUARIOS
-// ==========================================
-
 async function registrarNuevoUsuario() {
-    // Obtenemos los elementos del formulario de registro
     const cedula = document.getElementById('reg-CC');
     const nombreInput = document.getElementById('reg-nombreReal');
     const password = document.getElementById('reg-pass');
@@ -57,13 +48,11 @@ async function registrarNuevoUsuario() {
     const contConfirm = confirmPassword.value.trim(); 
     const cargos_E = puesto.value.trim();
 
-    // Validar campos vacíos
     if (CCT === "" || nombre === "" || cont === "" || contConfirm === "" || cargos_E === "") {
         alert("Por favor, rellena todos los campos para el registro.");
         return;
     }
 
-    // Validar contraseñas idénticas
     if (cont !== contConfirm) {
         alert("Las contraseñas de registro no coinciden. Por favor, verifícalas.");
         password.focus();
@@ -78,7 +67,6 @@ async function registrarNuevoUsuario() {
     };
 
     try {
-        // Guardamos en la misma ruta /users/NUMERO_CEDULA.json
         const respuesta = await fetch(`${URL_LOGIN}/users/${CCT}.json`, {
             method: 'PUT',
             body: JSON.stringify(datosUsuario),
@@ -90,7 +78,6 @@ async function registrarNuevoUsuario() {
         if (respuesta.ok) {
             alert("¡Usuario registrado con éxito! Ya puedes iniciar sesión.");
             
-            // Limpiamos el formulario de registro
             cedula.value = "";
             nombreInput.value = "";
             password.value = "";
@@ -104,7 +91,6 @@ async function registrarNuevoUsuario() {
     }
 }
 
-// Funciones para mostrar/ocultar la ventana de registro
 function mostrarFormularioRegistro() {
     document.getElementById('contenedor-registro').style.display = 'block';
 }

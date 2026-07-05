@@ -2,11 +2,17 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inventario Firebase</title>
+    <title>Inventario</title>
 </head>
 <body>
-
-    <h1>Gestión de Inventario (Firebase)</h1>
+    <div class="nav">
+        <a href="user.html">GESTION DE USUARIO</a>
+        <a href="inventario.html">INVENTARIO</a>
+        <a href="producion.html">PRODUCCION</a>
+        <a href="login.html">CERRAR SESION</a>
+    </div>
+    
+    <h1>Gestión de Inventario</h1>
 
     <h3 id="form-title">Añadir Nuevo Producto</h3>
     <form id="product-form">
@@ -30,6 +36,28 @@
         <label>Proveedor:</label>
         <input type="text" id="proveedor" required><br><br>
 
+        <div id="seccion-ingredientes" style="display: none; border: 1px dashed #000; padding: 10px; margin-bottom: 15px;">
+            <h4>Ingredientes de la Receta</h4>
+            
+            <label>Tipo de Ingrediente:</label>
+            <select id="ingrediente-tipo" onchange="actualizarDesplegableIngredientes()">
+                <option value="materia_prima">Materia Prima</option>
+                <option value="receta">Receta</option>
+            </select>&nbsp;&nbsp;
+
+            <label>Seleccionar Ítems:</label>
+            <select id="ingrediente-seleccionado">
+                </select>&nbsp;&nbsp;
+
+            <label>Stock Necesario:</label>
+            <input type="number" id="ingrediente-cantidad" min="0" step="any"><br><br>
+
+            <button type="button" onclick="agregarIngredienteLista()">Agregar Ingrediente</button>
+            
+            <h5>Lista de Ingredientes Añadidos:</h5>
+            <ul id="lista-ingredientes-agregados"></ul>
+        </div>
+
         <button type="submit" id="btn-submit">Guardar Producto</button>
     </form>
 
@@ -40,7 +68,7 @@
     <input type="text" id="buscar-codigo" placeholder="Escribe el código aquí..." oninput="renderTable()"><br><br>
 
     <h3>Productos Guardados</h3>
-    <table>
+    <table >
         <thead>
             <tr>
                 <th>Código</th>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Módulo de Producción</title>
+</head>
+<body>
+    <h1>Fabricación de Productos (Recetas)</h1>
+    
+    <label for="receta-select">Selecciona la Receta:</label>
+    <select id="receta-select">
+        <option value="">Cargando recetas...</option>
+    </select>
+
+    <br><br>
+
+    <label for="cantidad-fabricar">Cantidad a fabricar:</label>
+    <input type="number" id="cantidad-fabricar" min="1" placeholder="Ej. 10">
+
+    <h3>Ingredientes Necesarios e Inventario Real:</h3>
+    <div id="detalles-receta">
+        </div>
+
+    <br>
+    <button id="btn-producir">Producir</button>
+
+    <script src="producion.js"></script>
+</body>
+</html>
