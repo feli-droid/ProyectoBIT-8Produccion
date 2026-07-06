@@ -35,7 +35,6 @@ function toggleStock() {
 }
 
 function actualizarDesplegableIngredientes() {
-    // Verificamos que exista el componente y que tenga la función antes de ejecutarla
     if (ingredienteSeleccionado && typeof ingredienteSeleccionado.actualizarOpciones === 'function') {
         ingredienteSeleccionado.setAttribute('tipo-filtro', ingredienteTipo.value);
         ingredienteSeleccionado.actualizarOpciones(inventario, editIdInput.value);
