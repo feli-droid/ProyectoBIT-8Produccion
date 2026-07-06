@@ -288,3 +288,25 @@ tr:hover td {
         white-space: nowrap;
     }
 }
+.main-container {
+    max-width: 1000px;
+    width: calc(100% - 40px);
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #110b21;
+    border: 3px solid #00ffcc;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.2), inset 0 0 15px rgba(0, 255, 204, 0.05);
+}
+
+/* Corrección para que la sección de buscar por código NO se desvíe */
+.main-container h2,
+.main-container .buscar-seccion, 
+#buscar-codigo-input,
+label[for="buscar-codigo"] {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    display: block;
+}

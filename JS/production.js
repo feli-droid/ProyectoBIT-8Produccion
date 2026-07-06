@@ -23,7 +23,7 @@ async function fetchInventario() {
 }
 
 function poblarDesplegableRecetas() {
-    if (recetaSelect) {
+    if (recetaSelect && typeof recetaSelect.actualizarOpciones === 'function') {
         recetaSelect.actualizarOpciones(inventario);
     }
 }
@@ -37,7 +37,7 @@ function mostrarDetallesReceta() {
 
     const receta = inventario[idReceta];
     
-    if (!receta.ingredientes || receta.ingredientes.length === 0) {
+    if (!receta || !receta.ingredientes || receta.ingredientes.length === 0) {
         detallesRecetaDiv.innerHTML = '<p style="color: red;">Esta receta no tiene ingredientes configurados.</p>';
         return;
     }
@@ -117,6 +117,7 @@ async function procesarProduccion() {
             headers: { 'Content-Type': 'application/json' }
         });
 
+        // Llamada corregida pasando 'actualizaciones'
         await guardarEnHistorialFirebase(receta.nombre, cantidadAFabricar, actualizaciones);
 
         alert(`¡Producción exitosa! Se fabricaron ${cantidadAFabricar} unidades de ${receta.nombre}.`);
@@ -134,11 +135,12 @@ async function procesarProduccion() {
     }
 }
 
+// CORRECCIÓN AQUÍ: Se cambió 'quantity' por 'cantidad'
 async function guardarEnHistorialFirebase(nombreProducto, cantidad, ingredientesUsados) {
     const nuevoRegistro = {
         fecha: new Date().toLocaleString(),
         producto: nombreProducto,
-        cantidadFabricada: quantity,
+        cantidadFabricada: cantidad, 
         materiaPrima: ingredientesUsados.map(ing => ({
             nombre: ing.nombre,
             usado: ing.cantidadUsada
@@ -174,7 +176,9 @@ async function fetchHistorialFirebase() {
             const tr = document.createElement('tr');
             
             let detalleInsumos = '';
-            reg.materiaPrima.forEach(m => {
+            // Se añade '|| []' por seguridad en caso de que un registro antiguo venga vacío
+            const materias = reg.materiaPrima || []; 
+            materias.forEach(m => {
                 detalleInsumos += `${m.nombre}: -${m.usado}<br>`;
             });
 
@@ -205,10 +209,12 @@ async function eliminarHistorialFirebase() {
     }
 }
 
+// Listeners de eventos
 recetaSelect.addEventListener('change', mostrarDetallesReceta);
 cantidadFabricarInput.addEventListener('input', mostrarDetallesReceta);
 btnProducir.addEventListener('click', procesarProduccion);
 btnEliminarHistorial.addEventListener('click', eliminarHistorialFirebase);
 
+// Inicialización de datos
 fetchInventario();
 fetchHistorialFirebase();

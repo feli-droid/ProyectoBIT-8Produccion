@@ -16,8 +16,7 @@ const buscarCodigoInput = document.getElementById('buscar-codigo');
 
 const seccionIngredientes = document.getElementById('seccion-ingredientes');
 const ingredienteTipo = document.getElementById('ingrediente-tipo');
-// MODIFICACIÓN: Apunta ahora a la etiqueta del Web Component directamente
-const ingredienteSeleccionado = document.getElementById('ingrediente-seleccionado'); 
+const ingredienteSeleccionado = document.getElementById('ingrediente-seleccionado');
 const ingredienteCantidad = document.getElementById('ingrediente-cantidad');
 const listaIngredientesAgregados = document.getElementById('lista-ingredientes-agregados');
 
@@ -36,7 +35,8 @@ function toggleStock() {
 }
 
 function actualizarDesplegableIngredientes() {
-    if (ingredienteSeleccionado) {
+    // Verificamos que exista el componente y que tenga la función antes de ejecutarla
+    if (ingredienteSeleccionado && typeof ingredienteSeleccionado.actualizarOpciones === 'function') {
         ingredienteSeleccionado.setAttribute('tipo-filtro', ingredienteTipo.value);
         ingredienteSeleccionado.actualizarOpciones(inventario, editIdInput.value);
     }
@@ -52,8 +52,12 @@ function agregarIngredienteLista() {
     }
 
     const productoOriginal = inventario[idItem];
-    
-    const existe = Array.from(ingredientesTemporales).some(ing => ing.id === idItem);
+    if (!productoOriginal) {
+        alert("El ítem seleccionado ya no existe en el inventario.");
+        return;
+    }
+
+    const existe = ingredientesTemporales.some(ing => ing.id === idItem);
     if (existe) {
         alert("Este ingrediente ya está en la lista.");
         return;
@@ -75,8 +79,10 @@ function actualizarListaVisualIngredientes() {
     listaIngredientesAgregados.innerHTML = '';
     ingredientesTemporales.forEach((ing, index) => {
         const li = document.createElement('li');
-        li.textContent = `[${ing.codigo}] ${ing.nombre} - Cant: ${ing.cantidad} `;
-        
+
+        const span = document.createElement('span');
+        span.textContent = `[${ing.codigo}] ${ing.nombre} - Cant: ${ing.cantidad}`;
+
         const btnEliminarIng = document.createElement('button');
         btnEliminarIng.textContent = "X";
         btnEliminarIng.type = "button";
@@ -84,7 +90,8 @@ function actualizarListaVisualIngredientes() {
             ingredientesTemporales.splice(index, 1);
             actualizarListaVisualIngredientes();
         };
-        
+
+        li.appendChild(span);
         li.appendChild(btnEliminarIng);
         listaIngredientesAgregados.appendChild(li);
     });
@@ -109,7 +116,7 @@ function renderTable() {
     tableBody.innerHTML = '';
     const keys = Object.keys(inventario);
     const busqueda = buscarCodigoInput.value.trim().toLowerCase();
-    
+
     if (keys.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="6">No hay productos.</td></tr>`;
         return;
@@ -119,8 +126,11 @@ function renderTable() {
 
     keys.forEach((id) => {
         const producto = inventario[id];
-        
-        if (busqueda && !producto.codigo.toLowerCase().includes(busqueda)) {
+        if (!producto) return; 
+
+        const codigo = String(producto.codigo ?? '').toLowerCase();
+
+        if (busqueda && !codigo.includes(busqueda)) {
             return;
         }
 
@@ -129,11 +139,11 @@ function renderTable() {
         const tipoTexto = producto.tipo === 'receta' ? 'Receta' : 'Materia Prima';
 
         tr.innerHTML = `
-            <td>${producto.codigo}</td>
-            <td>${producto.nombre}</td>
+            <td>${producto.codigo ?? ''}</td>
+            <td>${producto.nombre ?? ''}</td>
             <td>${tipoTexto}</td>
-            <td>${producto.proveedor}</td>
-            <td>${producto.stock}</td>
+            <td>${producto.proveedor ?? ''}</td>
+            <td>${producto.stock ?? 0}</td>
             <td>
                 <button onclick="editProduct('${id}')">Editar</button>
                 <button onclick="deleteProduct('${id}')">Eliminar</button>
@@ -177,7 +187,7 @@ form.addEventListener('submit', async function(e) {
                 body: JSON.stringify(productoData),
                 headers: { 'Content-Type': 'application/json' }
             });
-            
+
             editIdInput.value = "";
             btnSubmit.textContent = "Guardar Producto";
             formTitle.textContent = "Añadir Nuevo Producto";
@@ -187,7 +197,7 @@ form.addEventListener('submit', async function(e) {
         ingredientesTemporales = [];
         toggleStock(); 
         await fetchProductos();
-        
+
     } catch (error) {
         alert("Error al guardar");
         console.error(error);
@@ -196,14 +206,15 @@ form.addEventListener('submit', async function(e) {
 
 window.editProduct = function(id) {
     const prod = inventario[id];
-    
-    codigoInput.value = prod.codigo;
-    nombreInput.value = prod.nombre;
-    tipoSelect.value = prod.tipo;
-    proveedorInput.value = prod.proveedor;
-    
+    if (!prod) return;
+
+    codigoInput.value = prod.codigo ?? '';
+    nombreInput.value = prod.nombre ?? '';
+    tipoSelect.value = prod.tipo ?? 'materia_prima';
+    proveedorInput.value = prod.proveedor ?? '';
+
     toggleStock(); 
-    stockInput.value = prod.stock; 
+    stockInput.value = prod.stock ?? 0; 
 
     if (prod.tipo === 'receta') {
         ingredientesTemporales = prod.ingredientes ? [...prod.ingredientes] : [];
@@ -212,7 +223,7 @@ window.editProduct = function(id) {
 
     editIdInput.value = id;
     btnSubmit.textContent = "Actualizar Producto";
-    formTitle.textContent = "Editando Producto: " + prod.nombre;
+    formTitle.textContent = "Editando Producto: " + (prod.nombre ?? '');
 };
 
 window.deleteProduct = async function(id) {
@@ -221,7 +232,7 @@ window.deleteProduct = async function(id) {
             await fetch(`${FIREBASE_URL}/${id}.json`, {
                 method: 'DELETE'
             });
-            
+
             if(editIdInput.value === id) {
                 form.reset();
                 editIdInput.value = "";
