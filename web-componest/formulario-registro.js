@@ -33,7 +33,6 @@ class FormularioRegistro extends HTMLElement {
             </div>
         `;
         
-        // 🟢 ESTO HACE QUE SE OCULTE AL CARGAR LA PÁGINA SIN USAR ESTILOS EN EL HTML
         this.querySelector('#contenedor-registro').style.display = 'none';
     }
 
