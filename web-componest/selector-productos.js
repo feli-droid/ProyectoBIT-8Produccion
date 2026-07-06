@@ -1,11 +1,9 @@
-// selector-productos.js
 class SelectorProductos extends HTMLElement {
     constructor() {
         super();
         this.innerHTML = `<select id="dinamico-select"><option value="">Cargando ítems...</option></select>`;
     }
 
-    // Le permite al componente saber si debe listar "receta" o "materia_prima"
     static get observedAttributes() { return ['tipo-filtro']; }
 
     async actualizarOpciones(inventarioCompleto) {
