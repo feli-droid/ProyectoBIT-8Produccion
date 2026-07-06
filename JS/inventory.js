@@ -16,7 +16,8 @@ const buscarCodigoInput = document.getElementById('buscar-codigo');
 
 const seccionIngredientes = document.getElementById('seccion-ingredientes');
 const ingredienteTipo = document.getElementById('ingrediente-tipo');
-const ingredienteSeleccionado = document.getElementById('ingrediente-seleccionado');
+// MODIFICACIÓN: Apunta ahora a la etiqueta del Web Component directamente
+const ingredienteSeleccionado = document.getElementById('ingrediente-seleccionado'); 
 const ingredienteCantidad = document.getElementById('ingrediente-cantidad');
 const listaIngredientesAgregados = document.getElementById('lista-ingredientes-agregados');
 
@@ -35,29 +36,9 @@ function toggleStock() {
 }
 
 function actualizarDesplegableIngredientes() {
-    ingredienteSeleccionado.innerHTML = '';
-    const tipoBuscado = ingredienteTipo.value;
-    const keys = Object.keys(inventario);
-
-    let contador = 0;
-    keys.forEach(id => {
-        const prod = inventario[id];
-        if (id === editIdInput.value) return;
-
-        if (prod.tipo === tipoBuscado) {
-            const option = document.createElement('option');
-            option.value = id; 
-            option.textContent = `[${prod.codigo}] - ${prod.nombre}`;
-            ingredienteSeleccionado.appendChild(option);
-            contador++;
-        }
-    });
-
-    if (contador === 0) {
-        const option = document.createElement('option');
-        option.textContent = "No hay elementos registrados";
-        option.disabled = true;
-        ingredienteSeleccionado.appendChild(option);
+    if (ingredienteSeleccionado) {
+        ingredienteSeleccionado.setAttribute('tipo-filtro', ingredienteTipo.value);
+        ingredienteSeleccionado.actualizarOpciones(inventario, editIdInput.value);
     }
 }
 
@@ -177,7 +158,6 @@ form.addEventListener('submit', async function(e) {
         proveedor: proveedorInput.value
     };
 
-    // Se guardan en el objeto final que va directo a Firebase
     if (tipoSelect.value === 'receta') {
         productoData.ingredientes = ingredientesTemporales;
     }
@@ -205,7 +185,7 @@ form.addEventListener('submit', async function(e) {
 
         form.reset();
         ingredientesTemporales = [];
-        toggleStock(); // Vuelve a ocultar la sección de ingredientes automáticamente
+        toggleStock(); 
         await fetchProductos();
         
     } catch (error) {
@@ -222,7 +202,7 @@ window.editProduct = function(id) {
     tipoSelect.value = prod.tipo;
     proveedorInput.value = prod.proveedor;
     
-    toggleStock(); // Muestra u oculta la sección dependiendo del tipo del producto editado
+    toggleStock(); 
     stockInput.value = prod.stock; 
 
     if (prod.tipo === 'receta') {

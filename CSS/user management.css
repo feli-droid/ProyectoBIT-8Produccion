@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+/* ==========================================
+   CONFIGURACIÓN GENERAL (Retro-Moderno)
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Orbitron', sans-serif; 
+    font-style: italic; 
+}
+
+body {
+    background-color: #0b0713;
+    background-image: 
+        linear-gradient(rgba(11, 7, 19, 0.95), rgba(11, 7, 19, 0.95)),
+        linear-gradient(to right, #1d153a 1px, transparent 1px),
+        linear-gradient(to bottom, #1d153a 1px, transparent 1px);
+    background-size: 100% 100%, 30px 30px, 30px 30px;
+    color: #ffffff;
+    min-height: 100vh;
+    padding-bottom: 40px;
+}
+
+/* ==========================================
+   BARRA DE NAVEGACIÓN (NAV) RESPONSIVE
+   ========================================== */
+.nav {
+    background-color: #150f24;
+    border-bottom: 3px solid #00ffcc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    box-shadow: 0 4px 15px rgba(0, 255, 204, 0.15);
+}
+
+/* Esquina izquierda: Empresa y Usuario */
+.nav-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.empresa-nombre {
+    color: #ff007f; /* Rosa Neón */
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.user-logged {
+    color: #a497c2;
+    font-size: 0.8rem;
+}
+
+.user-logged strong {
+    color: #00ffcc; /* Nombre del usuario en turquesa */
+}
+
+/* Esquina derecha: Enlaces */
+.nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 8px 12px;
+    transition: all 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: #00ffcc;
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+}
+
+.nav-links a.btn-logout {
+    background-color: #3d2f5c;
+    border: 2px solid #000;
+    border-radius: 4px;
+    box-shadow: 0px 3px 0px #211834;
+}
+
+.nav-links a.btn-logout:hover {
+    background-color: #ff007f;
+    color: #fff;
+    box-shadow: 0px 3px 0px #99004c;
+}
+
+/* ==========================================
+   CONTENEDOR CENTRAL PANEL
+   ========================================== */
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #150f24;
+    border: 3px solid #00ffcc;
+    border-radius: 12px;
+    box-shadow: 6px 6px 0px #ab00ff, 12px 12px 0px #000;
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: #00ffcc;
+    text-shadow: 3px 3px 0px #ab00ff, 4px 4px 0px #000;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+/* Buscador */
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-box label {
+    display: block;
+    margin-bottom: 8px;
+    color: #a497c2;
+    font-size: 0.9rem;
+}
+
+.search-box input {
+    background-color: #090511;
+    border: 2px solid #3d2f5c;
+    color: #00ffcc;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    outline: none;
+    width: 100%;
+    max-width: 400px;
+    transition: all 0.2s;
+}
+
+.search-box input:focus {
+    border-color: #ff007f;
+    color: #ff007f;
+}
+
+/* Botón Añadir Usuario */
+.btn-add {
+    background: #ff007f;
+    color: #fff;
+    font-weight: 900;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid #000;
+    box-shadow: 0px 4px 0px #99004c;
+    margin-bottom: 25px;
+}
+
+.btn-add:active {
+    transform: translateY(4px);
+    box-shadow: 0px 0px 0px #000;
+}
+
+/* ==========================================
+   TABLAS ESTILO ARCADE (TABLA)
+   ========================================== */
+.table-responsive {
+    overflow-x: auto; /* Evita que la tabla rompa el diseño en celulares */
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: #090511;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 2px solid #1d153a;
+}
+
+th {
+    background-color: #211834;
+    color: #ff007f;
+    font-weight: 900;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    border-bottom: 3px solid #00ffcc;
+}
+
+td {
+    color: #ffffff;
+    font-size: 0.9rem;
+}
+
+tr:hover td {
+    background-color: #1a142e;
+    color: #00ffcc;
+}
+
+/* Botones de acción dentro de la tabla */
+.btn-action {
+    background-color: #3d2f5c;
+    color: #00ffcc;
+    border: 1px solid #00ffcc;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn-action:hover {
+    background-color: #00ffcc;
+    color: #000;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN (Celular y Tablet)
+   ========================================== */
+@media (max-width: 768px) {
+    .nav {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .nav-brand {
+        align-items: center;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .container {
+        margin: 15px;
+        padding: 20px;
+        box-shadow: 4px 4px 0px #ab00ff, 8px 8px 0px #000;
+    }
+
+    th, td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Módulo de Producción</title>
+       <script src="../web-componest/selector-productos.js" defer></script>
+    <script src="../js/production.js" defer></script>
+</head>
+<body>
+    <div class="nav">
+        <a href="User management.html">GESTION DE USUARIO</a>
+        <a href="inventory.html">INVENTARIO</a>
+        <a href="production.html">PRODUCCION</a>
+        <a href="login.html">CERRAR SESION</a>
+    </div>
+    
+    <h1>Fabricación de Productos</h1>
+    
+    <label for="receta-select">Selecciona la Receta:</label>
+    <selector-productos id="receta-select" tipo-filtro="receta"></selector-productos>
+
+    <br><br>
+
+    <label for="cantidad-fabricar">Cantidad a fabricar:</label>
+    <input type="number" id="cantidad-fabricar" min="1" placeholder="Ej. 10">
+
+    <h3>Ingredientes Necesarios e Inventario Real:</h3>
+    <div id="detalles-receta"></div>
+
+    <br>
+    <button id="btn-producir">Producir</button>
+
+    <hr>
+
+    <div id="seccion-historial">
+        <h2>Historial de Producción</h2>
+        <button id="btn-eliminar-historial">Eliminar Historial</button>
+        <br><br>
+        <table border="1" id="tabla-historial">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Producto Fabricado</th>
+                    <th>Cantidad</th>
+                    <th>Materia Prima Consumida</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpo-historial">
+                </tbody>
+        </table>
+    </div>
+
+    <script src="production.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="../css/user management.css"> 
+    <script src="../web-componest/formulario-registro.js" defer></script>
+    <script src="../js/User management.js" defer></script>
+        <script src="../web-componest/nav-name.js" defer></script>
+</head>
+<body>
+    <div class="nav">
+        <div class="nav-brand">
+            <span class="empresa-nombre">MI EMPRESA ARCADE</span>
+            <span class="user-logged">USUARIO: <strong id="nombre-sesion">Cargando...</strong></span>
+        </div>
+        <div class="nav-links">
+            <a href="User management.html" class="active">GESTION DE USUARIO</a>
+            <a href="inventory.html">INVENTARIO</a>
+            <a href="production.html">PRODUCCION</a>
+            <a href="login.html" class="btn-logout">CERRAR SESION</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Gestión de Usuarios</h2>
+        
+        <div class="search-box">
+            <label for="buscador-cc"><strong>Buscar por CC:</strong></label>
+            <input 
+                type="text" 
+                id="buscador-cc" 
+                placeholder="Escribe la cédula..." 
+                oninput="filtrarUsuarios()"
+            >
+        </div>
+
+        <button class="btn-add" onclick="document.querySelector('formulario-registro').mostrar()">Añadir Usuario</button>
+
+        <formulario-registro></formulario-registro>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>CC</th>
+                        <th>Nombre</th>
+                        <th>Cargo</th>
+                        <th>Acciones</th> 
+                    </tr>
+                </thead>
+                <tbody id="tabla-usuarios">
+                    <tr>
+                        <td>123456</td>
+                        <td>Colt Silver</td>
+                        <td>EMPLEADO</td>
+                        <td><button class="btn-action">Editar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
