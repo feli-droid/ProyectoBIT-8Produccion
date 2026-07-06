@@ -1,5 +1,4 @@
 const FIREBASE_URL = "https://empresa-bits-8-default-rtdb.firebaseio.com/productos";
-// 🟢 LO QUE SE AÑADIÓ: Nueva constante apuntando al nodo de historial en tu Firebase
 const HISTORIAL_URL = "https://empresa-bits-8-default-rtdb.firebaseio.com/historial";
 
 let inventario = {};
@@ -8,12 +7,9 @@ const recetaSelect = document.getElementById('receta-select');
 const cantidadFabricarInput = document.getElementById('cantidad-fabricar');
 const detallesRecetaDiv = document.getElementById('detalles-receta');
 const btnProducir = document.getElementById('btn-producir');
-
-// 🟢 LO QUE SE CAMBIÓ: Referencia al cuerpo de la tabla del historial
 const cuerpoHistorial = document.getElementById('cuerpo-historial');
 const btnEliminarHistorial = document.getElementById('btn-eliminar-historial');
 
-// 1. Cargar los productos desde Firebase
 async function fetchInventario() {
     try {
         const response = await fetch(`${FIREBASE_URL}.json`);
@@ -26,14 +22,12 @@ async function fetchInventario() {
     }
 }
 
-// 2. Se le delega la responsabilidad al componente
 function poblarDesplegableRecetas() {
     if (recetaSelect) {
         recetaSelect.actualizarOpciones(inventario);
     }
 }
 
-// 3. Mostrar los ingredientes requeridos cuando se elija una receta
 function mostrarDetallesReceta() {
     detallesRecetaDiv.innerHTML = '';
     const idReceta = recetaSelect.value; 
@@ -67,7 +61,6 @@ function mostrarDetallesReceta() {
     detallesRecetaDiv.appendChild(ul);
 }
 
-// 4. Procesar la Fabricación / Producción
 async function procesarProduccion() {
     const idReceta = recetaSelect.value;
     const cantidadAFabricar = parseInt(cantidadFabricarInput.value);
@@ -124,7 +117,6 @@ async function procesarProduccion() {
             headers: { 'Content-Type': 'application/json' }
         });
 
-        // 🟢 LO QUE SE CAMBIÓ: Guardar este registro directamente en Firebase Realtime Database
         await guardarEnHistorialFirebase(receta.nombre, cantidadAFabricar, actualizaciones);
 
         alert(`¡Producción exitosa! Se fabricaron ${cantidadAFabricar} unidades de ${receta.nombre}.`);
@@ -142,14 +134,11 @@ async function procesarProduccion() {
     }
 }
 
-// 🟢 LO QUE SE CAMBIÓ: Funciones de historial rediseñadas para trabajar con Firebase y Tablas
-
-// Guarda un nuevo registro usando método POST (Firebase le genera un ID único automáticamente)
 async function guardarEnHistorialFirebase(nombreProducto, cantidad, ingredientesUsados) {
     const nuevoRegistro = {
         fecha: new Date().toLocaleString(),
         producto: nombreProducto,
-        cantidadFabricada: cantidad,
+        cantidadFabricada: quantity,
         materiaPrima: ingredientesUsados.map(ing => ({
             nombre: ing.nombre,
             usado: ing.cantidadUsada
@@ -162,13 +151,12 @@ async function guardarEnHistorialFirebase(nombreProducto, cantidad, ingredientes
             body: JSON.stringify(nuevoRegistro),
             headers: { 'Content-Type': 'application/json' }
         });
-        await fetchHistorialFirebase(); // Recargar la tabla tras guardar el dato
+        await fetchHistorialFirebase();
     } catch (error) {
         console.error("Error al guardar el historial en Firebase:", error);
     }
 }
 
-// Trae los registros guardados del nodo /historial y los pinta en las filas de la tabla (<tr>)
 async function fetchHistorialFirebase() {
     cuerpoHistorial.innerHTML = '';
     try {
@@ -180,14 +168,11 @@ async function fetchHistorialFirebase() {
             return;
         }
 
-        // Firebase devuelve un objeto de objetos; convertimos a array para iterar
         const listaRegistros = Object.values(data);
         
-        // Los ordenamos en reversa para que la última producción salga arriba de la tabla
         listaRegistros.reverse().forEach(reg => {
             const tr = document.createElement('tr');
             
-            // Generamos la lista de materias primas consumidas para la cuarta columna
             let detalleInsumos = '';
             reg.materiaPrima.forEach(m => {
                 detalleInsumos += `${m.nombre}: -${m.usado}<br>`;
@@ -206,14 +191,13 @@ async function fetchHistorialFirebase() {
     }
 }
 
-// Elimina el nodo completo de /historial enviando un método DELETE a Firebase
 async function eliminarHistorialFirebase() {
-    if (confirm("¿Estás seguro de que deseas eliminar permanentemente todo el historial de Firebase?")) {
+    if (confirm("¿Seguro que quieres eliminar tu historial?")) {
         try {
             await fetch(`${HISTORIAL_URL}.json`, {
                 method: 'DELETE'
             });
-            await fetchHistorialFirebase(); // Actualiza la tabla para mostrar que quedó vacía
+            await fetchHistorialFirebase();
         } catch (error) {
             console.error("Error al eliminar el historial de Firebase:", error);
             alert("No se pudo eliminar el historial.");
@@ -221,12 +205,10 @@ async function eliminarHistorialFirebase() {
     }
 }
 
-// Eventos
 recetaSelect.addEventListener('change', mostrarDetallesReceta);
 cantidadFabricarInput.addEventListener('input', mostrarDetallesReceta);
 btnProducir.addEventListener('click', procesarProduccion);
 btnEliminarHistorial.addEventListener('click', eliminarHistorialFirebase);
 
-// Cargar inventario e historial desde el servidor al iniciar la aplicación
 fetchInventario();
 fetchHistorialFirebase();

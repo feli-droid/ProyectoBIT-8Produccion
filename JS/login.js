@@ -26,10 +26,7 @@ formulario.addEventListener("submit", async (e) => {
         if (usuarioValido) {
             alert(`Bienvenido a la Empresa bit-8, ${usuarioValido.name}`);
             
-            // ========================================================
-            // GUARDS EL NOMBRE EN LA MEMORIA ANTES DE CAMBIAR DE PÁGINA
-            // ========================================================
-            localStorage.setItem("usuarioLogueado", usuarioValido.name); // <--- ESTA ES LA LÍNEA NUEVA
+            localStorage.setItem("usuarioLogueado", usuarioValido.name);
             
             window.location.href = "User management.html"; 
         } else {

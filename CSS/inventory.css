@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Orbitron', sans-serif; 
+    font-style: italic; 
+}
+
+body {
+    background-color: #0b0713;
+    background-image: 
+        linear-gradient(rgba(11, 7, 19, 0.95), rgba(11, 7, 19, 0.95)),
+        linear-gradient(to right, #1d153a 1px, transparent 1px),
+        linear-gradient(to bottom, #1d153a 1px, transparent 1px);
+    background-size: 100% 100%, 30px 30px, 30px 30px;
+    color: #ffffff;
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
+
+form br, body > br {
+    display: none;
+}
+
+h1 {
+    display: none; 
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#product-form, #seccion-ingredientes, table, #buscar-codigo {
+    max-width: 1000px;
+    width: calc(100% - 40px);
+    margin: 20px auto;
+}
+
+h3 {
+    max-width: 1000px;
+    width: calc(100% - 40px);
+    margin: 30px auto 10px auto;
+    font-size: 1.5rem;
+    color: #00ffcc;
+    text-shadow: 3px 3px 0px #ab00ff, 4px 4px 0px #000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+hr {
+    max-width: 1000px;
+    width: calc(100% - 40px);
+    margin: 40px auto;
+    border: 0;
+    height: 3px;
+    background: linear-gradient(to right, transparent, #3d2f5c, #00ffcc, #3d2f5c, transparent);
+}
+
+#product-form {
+    background: #150f24;
+    border: 3px solid #00ffcc;
+    border-radius: 12px;
+    box-shadow: 6px 6px 0px #ab00ff, 12px 12px 0px #000;
+    padding: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px;
+    align-items: end;
+}
+
+#form-title, #btn-submit, #seccion-ingredientes {
+    grid-column: span 2;
+}
+
+#product-form label, body > label {
+    display: block;
+    color: #a497c2;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: -10px; 
+    text-transform: uppercase;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    background-color: #090511 !important;
+    border: 2px solid #3d2f5c !important;
+    color: #00ffcc !important;
+    text-shadow: 0 0 2px rgba(0, 255, 204, 0.5);
+    padding: 14px 16px !important;
+    font-size: 0.9rem !important;
+    border-radius: 6px !important;
+    outline: none;
+    width: 100% !important;
+    display: block;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+input:focus, select:focus {
+    border-color: #ff007f !important;
+    color: #ff007f !important;
+    text-shadow: 0 0 2px rgba(255, 0, 127, 0.5);
+    box-shadow: 0 0 8px rgba(255, 0, 127, 0.2) !important;
+}
+
+select option {
+    background-color: #150f24;
+    color: #fff;
+}
+
+#buscar-codigo {
+    background-color: #150f24;
+    border: 2px solid #3d2f5c;
+    max-width: 400px;
+    margin-left: max(20px, calc((100vw - 1000px) / 2));
+}
+
+#seccion-ingredientes {
+    background-color: #0e091a !important;
+    border: 3px dashed #ff007f !important; 
+    border-radius: 8px;
+    padding: 20px !important;
+    margin: 15px 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#seccion-ingredientes h4 {
+    color: #ff007f;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0 #000;
+}
+
+#seccion-ingredientes h5 {
+    color: #a497c2;
+    margin-top: 10px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+#lista-ingredientes-agregados {
+    list-style: none;
+    background: #090511;
+    border-radius: 6px;
+    padding: 10px;
+    border-left: 4px solid #ab00ff;
+}
+
+#lista-ingredientes-agregados li {
+    padding: 8px;
+    font-size: 0.85rem;
+    color: #ffffff;
+    border-bottom: 1px solid #1d153a;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    font-family: 'Orbitron', sans-serif !important;
+    font-style: italic !important;
+    font-weight: 900 !important;
+    padding: 14px 24px !important;
+    border-radius: 6px !important;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.1s ease;
+    border: 2px solid #000 !important;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+#btn-submit {
+    background: #ff007f;
+    color: #fff;
+    box-shadow: 0px 5px 0px #99004c;
+    width: 100%;
+}
+
+#seccion-ingredientes button {
+    background: #3d2f5c;
+    color: #00ffcc;
+    border-color: #00ffcc !important;
+    box-shadow: 0px 4px 0px #211834;
+    align-self: flex-start; 
+}
+
+button:hover {
+    filter: brightness(1.2);
+}
+
+button:active {
+    transform: translateY(4px);
+    box-shadow: 0px 0px 0px #000 !important;
+}
+
+table {
+    width: calc(100% - 40px);
+    border-collapse: collapse;
+    background-color: #090511;
+    border: 3px solid #150f24;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 2px solid #1d153a;
+}
+
+th {
+    background-color: #150f24;
+    color: #ff007f;
+    font-weight: 900;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    border-bottom: 3px solid #00ffcc;
+}
+
+td {
+    color: #ffffff;
+    font-size: 0.85rem;
+}
+
+tr:hover td {
+    background-color: #1a142e;
+    color: #00ffcc;
+}
+
+table tbody tr td button {
+    padding: 6px 12px !important;
+    font-size: 0.75rem !important;
+    margin: 2px;
+    background-color: #1d153a !important;
+    color: #00ffcc !important;
+    border: 2px solid #3d2f5c !important;
+    box-shadow: none !important;
+}
+
+table tbody tr td button:hover {
+    background-color: #00ffcc !important;
+    color: #000 !important;
+    border-color: #00ffcc !important;
+}
+
+table tbody tr td button:last-child {
+    color: #ff007f !important;
+}
+
+table tbody tr td button:last-child:hover {
+    background-color: #ff007f !important;
+    color: #fff !important;
+    border-color: #ff007f !important;
+}
+
+@media (max-width: 768px) {
+    .nav {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+    }
+}
+    #product-form {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        box-shadow: 4px 4px
+    }
+
+.nav {
+    background-color: #150f24; 
+    border-bottom: 3px solid #00ffcc; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    box-shadow: 0 4px 15px rgba(0, 255, 204, 0.15); 
+}
+
+.nav-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.empresa-nombre {
+    color: #ff007f; 
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0px #000; 
+}
+
+.user-logged {
+    color: #a497c2;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.user-logged strong {
+    color: #00ffcc; 
+    text-shadow: 0 0 5px rgba(0, 255, 204, 0.4);
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 8px 12px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover, 
+.nav-links a.active,
+.nav-links a[href="inventory.html"]:hover, 
+.nav-links a[href="User management.html"]:hover {
+    color: #00ffcc;
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+}
+
+.nav-links a.btn-logout, 
+.nav-links a[href="login.html"] {
+    background-color: #3d2f5c;
+    border: 2px solid #000;
+    border-radius: 4px;
+    box-shadow: 0px 3px 0px #211834;
+}
+
+.nav-links a.btn-logout:hover, 
+.nav-links a[href="login.html"]:hover {
+    background-color: #ff007f; 
+    color: #fff;
+    box-shadow: 0px 3px 0px #99004c;
+}
+
+@media (max-width: 768px) {
+    .nav {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .nav-brand {
+        align-items: center; 
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+}

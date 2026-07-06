@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Inventario</title>
+    <link rel="stylesheet" href="../css/inventory.css"> 
         <script src="../web-componest/selector-productos.js" defer></script>
     <script src="../js/inventory.js" defer></script>
+          <script src="../web-componest/nav-name.js" defer></script>
 </head>
 <body>
-    <div class="nav">
-        <a href="User management.html">GESTION DE USUARIO</a>
-        <a href="inventory.html">INVENTARIO</a>
-        <a href="production.html">PRODUCCION</a>
-        <a href="login.html">CERRAR SESION</a>
+  <div class="nav">
+        <div class="nav-brand">
+            <span class="empresa-nombre">MI EMPRESA BIT-8</span>
+            <span class="user-logged">USUARIO: <strong id="nombre-sesion">Cargando...</strong></span>
+        </div>
+        <div class="nav-links">
+            <a href="User management.html" class="active">GESTION DE USUARIO</a>
+            <a href="inventory.html">INVENTARIO</a>
+            <a href="production.html">PRODUCCION</a>
+            <a href="login.html" class="btn-logout">CERRAR SESION</a>
+        </div>
     </div>
     
     <h1>Gestión de Inventario</h1>

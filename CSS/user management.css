@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
-/* ==========================================
-   CONFIGURACIÓN GENERAL (Retro-Moderno)
-   ========================================== */
 * {
     margin: 0;
     padding: 0;
@@ -23,9 +20,6 @@ body {
     padding-bottom: 40px;
 }
 
-/* ==========================================
-   BARRA DE NAVEGACIÓN (NAV) RESPONSIVE
-   ========================================== */
 .nav {
     background-color: #150f24;
     border-bottom: 3px solid #00ffcc;
@@ -36,7 +30,6 @@ body {
     box-shadow: 0 4px 15px rgba(0, 255, 204, 0.15);
 }
 
-/* Esquina izquierda: Empresa y Usuario */
 .nav-brand {
     display: flex;
     flex-direction: column;
@@ -44,7 +37,7 @@ body {
 }
 
 .empresa-nombre {
-    color: #ff007f; /* Rosa Neón */
+    color: #ff007f; 
     font-weight: 900;
     font-size: 1.1rem;
     letter-spacing: 1px;
@@ -57,10 +50,9 @@ body {
 }
 
 .user-logged strong {
-    color: #00ffcc; /* Nombre del usuario en turquesa */
+    color: #00ffcc; 
 }
 
-/* Esquina derecha: Enlaces */
 .nav-links {
     display: flex;
     gap: 20px;
@@ -94,9 +86,6 @@ body {
     box-shadow: 0px 3px 0px #99004c;
 }
 
-/* ==========================================
-   CONTENEDOR CENTRAL PANEL
-   ========================================== */
 .container {
     max-width: 1000px;
     margin: 40px auto;
@@ -115,7 +104,6 @@ h2 {
     text-transform: uppercase;
 }
 
-/* Buscador */
 .search-box {
     margin-bottom: 20px;
 }
@@ -145,7 +133,6 @@ h2 {
     color: #ff007f;
 }
 
-/* Botón Añadir Usuario */
 .btn-add {
     background: #ff007f;
     color: #fff;
@@ -163,11 +150,8 @@ h2 {
     box-shadow: 0px 0px 0px #000;
 }
 
-/* ==========================================
-   TABLAS ESTILO ARCADE (TABLA)
-   ========================================== */
 .table-responsive {
-    overflow-x: auto; /* Evita que la tabla rompa el diseño en celulares */
+    overflow-x: auto;
     width: 100%;
 }
 
@@ -203,7 +187,6 @@ tr:hover td {
     color: #00ffcc;
 }
 
-/* Botones de acción dentro de la tabla */
 .btn-action {
     background-color: #3d2f5c;
     color: #00ffcc;
@@ -219,9 +202,6 @@ tr:hover td {
     color: #000;
 }
 
-/* ==========================================
-   RESPONSIVE DESIGN (Celular y Tablet)
-   ========================================== */
 @media (max-width: 768px) {
     .nav {
         flex-direction: column;
@@ -249,5 +229,159 @@ tr:hover td {
     th, td {
         padding: 10px 8px;
         font-size: 0.8rem;
+    }
+}
+
+table tbody tr td button {
+    font-family: 'Orbitron', sans-serif !important;
+    font-style: italic !important;
+    font-weight: 700 !important;
+    font-size: 0.8rem !important;
+    text-transform: uppercase;
+     background-color: #1d153a !important; 
+    color: #00ffcc !important; 
+    border: 2px solid #3d2f5c !important;
+    
+    padding: 6px 14px !important;
+    margin: 2px 4px !important;
+    cursor: pointer;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+}
+
+table tbody tr td button:hover {
+    background-color: #00ffcc !important;
+    color: #000000 !important;
+    border-color: #00ffcc !important;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.6) !important;
+}
+
+table tbody tr td button:last-child {
+    color: #ff007f !important;
+}
+
+table tbody tr td button:last-child:hover {
+    background-color: #ff007f !important;
+    color: #ffffff !important;
+    border-color: #ff007f !important;
+    box-shadow: 0 0 10px rgba(255, 0, 127, 0.6) !important;
+}
+formulario-registro {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+formulario-registro #contenedor-registro {
+    background: #150f24 !important; 
+    border: 3px solid #00ffcc !important; 
+    border-radius: 12px !important;
+    box-shadow: 6px 6px 0px #ab00ff, 12px 12px 0px #000 !important;
+    padding: 35px !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    display: none; 
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px !important;
+    box-sizing: border-box;
+}
+
+formulario-registro #contenedor-registro div {
+    margin-bottom: 0px !important; 
+    width: 100%;
+}
+
+formulario-registro input,
+formulario-registro select {
+    background-color: #090511 !important;
+    border: 2px solid #3d2f5c !important;
+    color: #00ffcc !important; 
+    text-shadow: 0 0 2px rgba(0, 255, 204, 0.5);
+    padding: 14px 16px !important;
+    font-size: 0.9rem !important;
+    font-family: 'Orbitron', sans-serif !important;
+    font-style: italic !important;
+    font-weight: 700;
+    border-radius: 6px !important;
+    outline: none;
+    width: 100% !important;
+    display: block;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+formulario-registro input:focus,
+formulario-registro select:focus {
+    border-color: #ff007f !important;
+    color: #ff007f !important;
+    text-shadow: 0 0 2px rgba(255, 0, 127, 0.5);
+    box-shadow: 0 0 8px rgba(255, 0, 127, 0.2) !important;
+}
+
+formulario-registro select option {
+    background-color: #150f24;
+    color: #fff;
+}
+
+formulario-registro button {
+    font-family: 'Orbitron', sans-serif !important;
+    font-style: italic !important;
+    font-weight: 900 !important;
+    padding: 14px !important;
+    border-radius: 6px !important;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.1s ease;
+    width: 100%;
+    border: 2px solid #000 !important;
+    text-transform: uppercase;
+}
+
+formulario-registro #btn-registrar {
+    background: #ff007f !important;
+    color: #fff !important;
+    box-shadow: 0px 4px 0px #99004c !important;
+}
+
+formulario-registro #btn-registrar:hover {
+    filter: brightness(1.2);
+}
+
+formulario-registro #btn-registrar:active {
+    transform: translateY(4px);
+    box-shadow: 0px 0px 0px #000 !important;
+}
+
+formulario-registro #btn-cancelar {
+    background: #3d2f5c !important;
+    color: #a497c2 !important;
+    box-shadow: 0px 4px 0px #211834 !important;
+    margin-left: 0px !important; 
+}
+
+formulario-registro #btn-cancelar:hover {
+    color: #fff !important;
+    filter: brightness(1.2);
+}
+
+formulario-registro #btn-cancelar:active {
+    transform: translateY(4px);
+    box-shadow: 0px 0px 0px #000 !important;
+}
+
+formulario-registro #contenedor-registro div:last-child {
+    display: flex !important;
+    gap: 12px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    formulario-registro #contenedor-registro div:last-child {
+        flex-direction: column !important;
+        gap: 10px;
     }
 }

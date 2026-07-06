@@ -1,42 +1,43 @@
 class FormularioRegistro extends HTMLElement {
     constructor() {
         super();
-        // Aquí guardamos el HTML que antes tenías duplicado en tus archivos
         this.innerHTML = `
-            <div id="contenedor-registro" style="display: none;">
+            <div id="contenedor-registro">
                 <h3>Crear Nueva Cuenta</h3>
                 
-                <div style="margin-bottom: 10px;">
+                <div>
                     <input type="number" id="reg-CC" placeholder="Identificación (CC)">
                 </div>
-                <div style="margin-bottom: 10px;">
+                <div>
                     <input type="text" id="reg-nombreReal" placeholder="Nombre Completo">
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <select id="reg-cargos" style="width: 100%; padding: 4px;">
+                <div>
+                    <select id="reg-cargos">
                         <option value="" disabled selected>Cuál es tu Cargo</option>
                         <option value="client">Cliente</option>
                         <option value="empleado">Empleado</option>
                         <option value="socio">Socio</option>
                     </select>
                 </div>
-                <div style="margin-bottom: 10px;">
+                <div>
                     <input type="password" id="reg-pass" placeholder="Contraseña">
                 </div>
-                <div style="margin-bottom: 15px;">
+                <div>
                     <input type="password" id="reg-passConfirm" placeholder="Repetir Contraseña">
                 </div>
 
                 <div>
                     <button type="button" id="btn-registrar">Registrarme</button>
-                    <button type="button" id="btn-cancelar" style="margin-left: 10px;">Cancelar</button>
+                    <button type="button" id="btn-cancelar">Cancelar</button>
                 </div>
             </div>
         `;
+        
+        // 🟢 ESTO HACE QUE SE OCULTE AL CARGAR LA PÁGINA SIN USAR ESTILOS EN EL HTML
+        this.querySelector('#contenedor-registro').style.display = 'none';
     }
 
     connectedCallback() {
-        // Escuchar los clics de los botones internos
         this.querySelector('#btn-registrar').addEventListener('click', () => this.registrarNuevoUsuario());
         this.querySelector('#btn-cancelar').addEventListener('click', () => this.ocultar());
     }
@@ -87,7 +88,6 @@ class FormularioRegistro extends HTMLElement {
             if (respuesta.ok) {
                 alert("¡Usuario registrado con éxito!");
                 this.ocultar();
-                
                 this.dispatchEvent(new CustomEvent('usuario-registrado'));
             }
         } catch (error) {
@@ -96,5 +96,4 @@ class FormularioRegistro extends HTMLElement {
     }
 }
 
-// Registramos el componente en el navegador
 customElements.define('formulario-registro', FormularioRegistro);
