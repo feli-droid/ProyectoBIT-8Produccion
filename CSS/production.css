@@ -299,7 +299,6 @@ tr:hover td {
     box-shadow: 0 0 20px rgba(0, 255, 204, 0.2), inset 0 0 15px rgba(0, 255, 204, 0.05);
 }
 
-/* Corrección para que la sección de buscar por código NO se desvíe */
 .main-container h2,
 .main-container .buscar-seccion, 
 #buscar-codigo-input,
@@ -309,4 +308,44 @@ label[for="buscar-codigo"] {
     margin-left: 0;
     margin-right: 0;
     display: block;
+}
+#Fecha {
+    background-color: #090511 !important;
+    border: 2px solid #3d2f5c !important;
+    color: #00ffcc !important;
+    text-shadow: 0 0 2px rgba(0, 255, 204, 0.5);
+    padding: 14px 16px !important;
+    font-size: 0.9rem !important;
+    border-radius: 6px !important;
+    outline: none;
+    max-width: 1000px;
+    width: calc(100% - 40px);
+    margin: 15px auto;
+    display: block;
+    transition: all 0.2s ease;
+}
+
+#Fecha:focus {
+    border-color: #ff007f !important;
+    color: #ff007f !important;
+    text-shadow: 0 0 2px rgba(255, 0, 127, 0.5);
+    box-shadow: 0 0 8px rgba(255, 0, 127, 0.2) !important;
+}
+
+#Fecha::-webkit-calendar-picker-indicator {
+    filter: invert(78%) sepia(51%) saturate(3620%) hue-rotate(121deg) brightness(101%) contrast(106%);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+
+#Fecha:focus::-webkit-calendar-picker-indicator {
+    filter: invert(13%) sepia(95%) saturate(7483%) hue-rotate(325deg) brightness(90%) contrast(112%);
+}
+
+.main-container #Fecha {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
 }
