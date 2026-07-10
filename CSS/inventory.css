@@ -333,7 +333,6 @@ table tbody tr td button:last-child:hover {
     box-shadow: 0 0 20px rgba(0, 255, 204, 0.2), inset 0 0 15px rgba(0, 255, 204, 0.05);
 }
 
-/* ---- Buscador (bloque único, sin duplicados que se pisen) ---- */
 .busqueda {
     display: flex;
     flex-direction: column;
