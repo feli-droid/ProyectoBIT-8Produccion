@@ -9,6 +9,10 @@ const detallesRecetaDiv = document.getElementById('detalles-receta');
 const btnProducir = document.getElementById('btn-producir');
 const cuerpoHistorial = document.getElementById('cuerpo-historial');
 const btnEliminarHistorial = document.getElementById('btn-eliminar-historial');
+const btnFiltroFecha = document.getElementById('Fecha')
+
+const filtroAnioSelect = document.getElementById('FiltroAnio');
+const filtroMesSelect = document.getElementById('FiltroMes');
 
 async function fetchInventario() {
     try {
@@ -117,7 +121,6 @@ async function procesarProduccion() {
             headers: { 'Content-Type': 'application/json' }
         });
 
-        // Llamada corregida pasando 'actualizaciones'
         await guardarEnHistorialFirebase(receta.nombre, cantidadAFabricar, actualizaciones);
 
         alert(`¡Producción exitosa! Se fabricaron ${cantidadAFabricar} unidades de ${receta.nombre}.`);
@@ -135,7 +138,6 @@ async function procesarProduccion() {
     }
 }
 
-// CORRECCIÓN AQUÍ: Se cambió 'quantity' por 'cantidad'
 async function guardarEnHistorialFirebase(nombreProducto, cantidad, ingredientesUsados) {
     const nuevoRegistro = {
         fecha: new Date().toLocaleString(),
@@ -176,7 +178,6 @@ async function fetchHistorialFirebase() {
             const tr = document.createElement('tr');
             
             let detalleInsumos = '';
-            // Se añade '|| []' por seguridad en caso de que un registro antiguo venga vacío
             const materias = reg.materiaPrima || []; 
             materias.forEach(m => {
                 detalleInsumos += `${m.nombre}: -${m.usado}<br>`;
@@ -209,12 +210,84 @@ async function eliminarHistorialFirebase() {
     }
 }
 
-// Listeners de eventos
 recetaSelect.addEventListener('change', mostrarDetallesReceta);
 cantidadFabricarInput.addEventListener('input', mostrarDetallesReceta);
 btnProducir.addEventListener('click', procesarProduccion);
 btnEliminarHistorial.addEventListener('click', eliminarHistorialFirebase);
 
-// Inicialización de datos
 fetchInventario();
+fetchHistorialFirebase();
+
+let historialProduccion = {};
+
+async function fetchHistorialFirebase() {
+    try {
+        const response = await fetch(`${HISTORIAL_URL}.json`);
+        const data = await response.json();
+        
+        historialProduccion = data || {};
+        renderizarHistorialFiltrado();
+    } catch (error) {
+        console.error("Error al obtener el historial de Firebase:", error);
+        if (cuerpoHistorial) {
+            cuerpoHistorial.innerHTML = '<tr><td">Error al cargar el historial.</td></tr>';
+        }
+    }
+}
+
+function renderizarHistorialFiltrado() {
+    if (!cuerpoHistorial) return;
+    cuerpoHistorial.innerHTML = '';
+    const fechaSeleccionada = btnFiltroFecha ? btnFiltroFecha.value : ''; 
+    const listaRegistros = Object.values(historialProduccion);
+
+    if (listaRegistros.length === 0) {
+        cuerpoHistorial.innerHTML = '<tr><td colspan="4">No hay registros de producción todavía.</td></tr>';
+        return;
+    }
+
+    const registrosFiltrados = listaRegistros.reverse().filter(reg => {
+        if (!fechaSeleccionada) return true;
+
+        const anioBuscado = fechaSeleccionada.substring(0, 4);
+        const mesTexto = fechaSeleccionada.substring(5, 7);
+        const mesBuscado = parseInt(mesTexto).toString();
+        const fechaTexto = reg.fecha ? reg.fecha.toString() : ''; 
+        const coincideAnio = fechaTexto.includes(anioBuscado);
+        const coincideMes = fechaTexto.includes(`/${mesBuscado}/`) || 
+                            fechaTexto.includes(`-${mesBuscado}-`) || 
+                            fechaTexto.includes(`/${mesTexto}/`);
+
+        return coincideAnio && coincideMes;
+    });
+
+    if (registrosFiltrados.length === 0) {
+        cuerpoHistorial.innerHTML = '<tr><td colspan="4">No se encontraron registros para este mes y año.</td></tr>';
+        return;
+    }
+
+    registrosFiltrados.forEach(reg => {
+        const tr = document.createElement('tr');
+        
+        let detalleInsumos = '';
+        const materias = reg.materiaPrima || []; 
+        materias.forEach(m => {
+            detalleInsumos += `${m.nombre}: -${m.usado}<br>`;
+        });
+
+        tr.innerHTML = `
+            <td>${reg.fecha || ''}</td>
+            <td>${reg.producto || ''}</td>
+            <td>${reg.cantidadFabricada || 0}</td>
+            <td>${detalleInsumos}</td>
+        `;
+        cuerpoHistorial.appendChild(tr);
+    });
+}
+
+if (btnFiltroFecha) {
+    btnFiltroFecha.addEventListener('change', renderizarHistorialFiltrado);
+    btnFiltroFecha.addEventListener('input', renderizarHistorialFiltrado);
+}
+
 fetchHistorialFirebase();
